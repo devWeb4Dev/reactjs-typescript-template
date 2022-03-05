@@ -1,12 +1,16 @@
-// import { BrowserRouter } from 'react-router-dom'
+import { ChakraProvider } from '@chakra-ui/react'
+import { AuthProvider } from '@hooks/useAuth'
 
 import { Routes } from './routes'
-import GlobalStyle from './styles/global'
+import { theme } from './styles/theme'
 
 const App: React.FC = () => (
   <>
-    <GlobalStyle />
-    <Routes />
+    <ChakraProvider theme={theme}>
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
+    </ChakraProvider>
   </>
 )
 

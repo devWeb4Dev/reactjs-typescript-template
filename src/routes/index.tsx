@@ -1,3 +1,7 @@
+import { Box } from '@chakra-ui/react'
+import { useAuth } from '@hooks/useAuth'
+import { IRoute } from '@ITypes/navigate'
+import { Login } from '@pages/Login'
 import {
   BrowserRouter,
   Routes as ReactRoutes,
@@ -5,31 +9,26 @@ import {
   Navigate,
   useLocation,
 } from 'react-router-dom'
-import { Home } from '@pages/Home'
-
-import { LoginTemplate } from './LoginTemplate'
-import { IRoute } from '../types/Navigation'
+import { PrivateTemplate } from 'src/templates/PrivateTemplate'
 
 const Product = () => <div>Product private</div>
 
-export const PrivateTemplate: React.FC<IRoute> = ({ children }: IRoute) => {
-  return (
-    <>
-      <div>xxxxx</div>
-      <div>aaaa</div>
-      <div>{children}</div>
-    </>
-  )
-}
-
 const PrivateRoute: React.FC<IRoute> = ({ children }: IRoute) => {
   const location = useLocation()
-  console.log(location)
-  const auth = true
-  return auth ? (
+  const { user, tokenExists } = useAuth()
+
+  console.log('[location]>>>>>>', location)
+  console.log('[User]>>>>>>', user, tokenExists)
+
+  // useEffect(() => {
+  //   // signIn({ email: 'mock3@oisami.com', password: 'Mock123!!!' })
+  //   console.log('<<<USER>>>>', tokenExists)
+  // }, [tokenExists])
+
+  return user && tokenExists ? (
     <PrivateTemplate>{children}</PrivateTemplate>
   ) : (
-    <Navigate to="/" />
+    <Navigate to="/login" replace state={{ from: location }} />
   )
 }
 
@@ -37,19 +36,22 @@ export const Routes: React.FC = () => {
   return (
     <BrowserRouter>
       <ReactRoutes>
+        <Route path="*" element={<Navigate to="/login" />} />
+
         <Route
-          path="/"
+          path="/login"
           element={
-            <LoginTemplate>
-              <div>Login</div>
-            </LoginTemplate>
+            <Login>
+              <Box bg="brand.100">login</Box>
+            </Login>
           }
         />
+
         <Route
           path="/home"
           element={
             <PrivateRoute>
-              <Home />
+              <Box bg="brand.400">Welcome</Box>
             </PrivateRoute>
           }
         />

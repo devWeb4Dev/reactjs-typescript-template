@@ -70,7 +70,7 @@
           "/^@/(?!.*assets).*/",
           "/^@/assets/"
         ],
-        "alphabetize": { "order": "desc", "ignoreCase": true, "allowSeparatedGroups": true }
+        "alphabetize": { "order": "asc", "ignoreCase": true, "allowSeparatedGroups": true }
       }
     ]
   }
